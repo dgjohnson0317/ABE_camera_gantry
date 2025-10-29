@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="gantry" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="gantry" value="gantry_"/>
+
+  <!-- DRAW WELDCELL -->
+
+  <xacro:include filename="$(find abe_project)/urdf/camera_gimbal.xacro"/>
+  <xacro:camera_gimbal gantry="gantry_"/>
+
+</robot>

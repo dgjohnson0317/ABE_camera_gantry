@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="camera_gimbal" params="gantry">
+
+   <link name="base_link"/>
+
+   <link name="${gantry}camera_gimbal_base">
+      <visual name="gimbal_base">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+	      <geometry>
+		      <box size=".04 .332 .04" />
+	      </geometry>
+        <material name="grey">
+          <color rgba=".5 .5 .5 1" />
+        </material>
+     </visual>
+
+      <visual name="gimbal_left_side">
+        <origin xyz="0 .156 .22" rpy="0 0 0"/>
+	      <geometry>
+		      <box size=".04 .02 .4" />
+	      </geometry>
+        <material name="different_grey">
+          <color rgba=".5 .5 .5 1" />
+        </material>
+     </visual>
+
+      <visual name="gimbal_right_side">
+        <origin xyz="0 -.156 .22" rpy="0 0 0"/>
+	      <geometry>
+		      <box size=".04 .02 .4" />
+	      </geometry>
+        <material name="different_grey">
+          <color rgba=".5 .5 .5 1" />
+        </material>
+     </visual>
+
+      <visual name="gimbal top">
+        <origin xyz="0 0 .44" rpy="0 0 0"/>
+	      <geometry>
+		      <box size=".04 .332 .04" />
+	      </geometry>
+        <material name="grey">
+          <color rgba=".5 .5 .5 1" />
+        </material>
+     </visual>
+    </link>
+
+    <link name="${gantry}camera_gimbal_link_1">
+      <visual name="gantry_xy">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+	      <geometry>
+		      <box size=".02 .33 .02" />
+	      </geometry>
+        <material name="red">
+          <color rgba="1 0 0 1" />
+        </material>
+     </visual>
+    </link>
+
+    <link name="${gantry}camera_gimbal_link_2">
+      <visual name="gantry_swivel">
+        <origin xyz=".04 0 .013" rpy="0 0 0"/>
+	      <geometry>
+		      <box size=".1 .04 .006" />
+	      </geometry>
+        <material name="blue">
+          <color rgba="0 0 1 1" />
+        </material>
+     </visual>
+    </link>
+    
+    <link name="${gantry}camera_gimbal_link_3">
+      <visual name="gantry_turn_z">
+        <origin xyz="0 0 .005" rpy="0 0 0"/>
+	      <geometry>
+		      <cylinder radius=".005" length=".01" />
+	      </geometry>
+        <material name="green">
+          <color rgba="0 1 0 1" />
+        </material>
+     </visual>
+    </link>
+
+    <link name="${gantry}camera_gimbal_link_4">
+      <visual name="gantry_turn_y">
+        <origin xyz="0 0 .005" rpy="1.5708 0 0"/>
+	      <geometry>
+		      <cylinder radius=".005" length=".05" />
+	      </geometry>
+        <material name="green">
+          <color rgba="0 1 0 1" />
+        </material>
+     </visual>
+    </link>
+
+    <link name="${gantry}camera_gimbal_link_5">
+      <visual name="gantry_camera">
+        <origin xyz="-.038 0 .029" rpy="0 0 0"/>
+	      <geometry>
+		      <box size=".076 .058 .058" />
+	      </geometry>
+        <material name="grey">
+          <color rgba=".5 .5 .5 1" />
+        </material>
+     </visual>
+    </link>
+
+    
+
+    <joint name="camera_gimbal_base" type="fixed"> 
+      <origin xyz="2.2 0 1" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="${gantry}camera_gimbal_base"/>
+    </joint>
+
+    <joint name="camera_gimbal_joint_1" type="prismatic">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="${gantry}camera_gimbal_base"/>
+      <child link="${gantry}camera_gimbal_link_1"/>
+      <axis xyz="0 0 1" />
+      <limit effort ="1000.0" lower="0.03" upper="0.4" velocity=".1"/>
+    </joint>
+
+    <joint name="camera_gimbal_joint_2" type="prismatic">
+      <origin xyz="-.08 0 0" rpy="0 0 0"/>
+      <parent link="${gantry}camera_gimbal_link_1"/>
+      <child link="${gantry}camera_gimbal_link_2"/>
+      <axis xyz="0 1 0 " />
+      <limit effort ="1000.0" lower="-.125" upper="0.125" velocity=".1"/>
+    </joint>
+
+    <joint name="camera_gimbal_joint_3" type="revolute">
+      <origin xyz="0 0 .005" rpy="0 0 0"/>
+      <parent link="${gantry}camera_gimbal_link_2"/>
+      <child link="${gantry}camera_gimbal_link_3"/>
+      <axis xyz="0 0 1" />
+      <limit effort ="1000.0" lower="-1.57" upper="1.57" velocity=".1"/>
+    </joint>
+
+    <joint name="camera_gimbal_joint_4" type="revolute">
+      <origin xyz="0 0 .005" rpy="0 0 0"/>
+      <parent link="${gantry}camera_gimbal_link_3"/>
+      <child link="${gantry}camera_gimbal_link_4"/>
+      <axis xyz="0 1 0" />
+      <limit effort ="1000.0" lower="-1.57" upper="1.57" velocity=".1"/>
+    </joint>
+
+    <joint name="camera_gimbal_joint_5" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="${gantry}camera_gimbal_link_4"/>
+      <child link="${gantry}camera_gimbal_link_5"/>
+    </joint>
+
+ </xacro:macro>
+</robot>
