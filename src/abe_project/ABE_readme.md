@@ -74,7 +74,24 @@ Subscription count: 0
 ```
 You can then run `ros2 run rqt_image_view rqt_image_view` to open a window that shows images in rqt. The current issue is that while the image is publishing, and using `ros2 topic echo --once /topic_name` outputs the corrrect information, the encoding is incorrect and therefore rqt cannot visualize it properly. The resolution to this is to also spin up the optris colorconvert node, by running `ros2 run optris_drivers2 optris_color_convert` in a new terminal. Then running rqt_image_view should display the thermal images. 
 
+### OpenCV
+`sudo apt install python3-opencv` should first be run to install open cv. It should be noted that the package.xml should have opencv included in it, although I have not gone through this process yet.
+
+
+
+
+
 #### Objectives
 At the moment, I intend to clone the cmml optris camera directory to be able to get it working in the current build I have going on. However, I am unsure whether I can just copy /src.
+
+
+## Dependencies
+- `python3-opencv`
+- `python3-colcon-common-extensions`
+- `ros-humble-xacro`
+- `ros-humble-camera-info-manager`
+- `ros-humble-joint-state-publisher-gui`
+
+
 
 

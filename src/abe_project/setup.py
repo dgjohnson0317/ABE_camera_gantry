@@ -13,6 +13,8 @@ setup(
             ('share/' + package_name + '/launch', ['launch/gantry.launch.py']),
             ('share/' + package_name + '/urdf', ['urdf/camera_gimbal.xacro']),
             ('share/' + package_name + '/urdf', ['urdf/gantry.xacro']),
+            ('share/' + package_name + '/config' + '/optris', ['config/optris/optris_config.xml']),
+            ('share/' + package_name + '/rviz', ['rviz/rviz_config.rviz']),
             # add meshes if needed
             # ('share/' + package_name + '/meshes', ['meshes/your_mesh_file.stl']),
         ],
