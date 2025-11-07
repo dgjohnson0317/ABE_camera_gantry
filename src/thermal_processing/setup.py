@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'image_processor = thermal_processing.image_processor:main',
+            'camera_control = thermal_processing.camera_control:main',
         ],
     },
 )

@@ -59,7 +59,7 @@ should resolve this error, at which point you can run `source opt/ros/humble/set
 ### Optris drivers installation
 Following instructions from the ros wiki and https://github.com/Computational-Mechanics-Materials-Lab/optris_drivers2, the following command was run to install the ros optris drivers:
 https://sdk.optris.com/downloads/
-make sure to install the corrent .deb version for your linux installation (for me this was amd64 and ubuntu 22.04).
+make sure to install the correct .deb version for your linux installation (for me this was amd64 and ubuntu 22.04).
 
 It also seems that ros2 does not come with the camera-info-manager by default, so I also ran `sudo apt install ros-humble-camera-info-manager`
 
@@ -77,7 +77,12 @@ You can then run `ros2 run rqt_image_view rqt_image_view` to open a window that 
 ### OpenCV
 `sudo apt install python3-opencv` should first be run to install open cv. It should be noted that the package.xml should have opencv included in it, although I have not gone through this process yet.
 
-
+The next steps here are somewhat convoluted, where autoscaling needs to be set to false in the camera config and temperature output is set to 1 currently, using the following code placed in the config.xml file for the camera.
+```
+  <AutoScale>0</AutoScale>
+  <TemperatureOutput>1</TemperatureOutput>
+  ```
+Now, there are scaling issues with the camera, although it is not automatically scaling. 
 
 
 

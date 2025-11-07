@@ -120,7 +120,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /thermal_image
+        Value: /thermal_image_view
       Value: true
   Enabled: true
   Global Options:

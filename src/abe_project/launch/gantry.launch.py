@@ -78,7 +78,14 @@ def generate_launch_description():
             executable='optris_imager_node',
             name='optris_camera',
             output='screen',
-            arguments=[config_file],  # adjust path
+            arguments=[config_file], # adjust path
+        ),
+
+        Node(
+            package='optris_drivers2',
+            executable='optris_colorconvert_node',
+            name='optris_camera_colored',
+            output='screen',  # adjust path
         ),
 
         Node(
@@ -86,7 +93,14 @@ def generate_launch_description():
             executable='image_processor',
             name='thermal_roi_detector',
             output='screen'
-        ),            
+        ),
+
+        Node(
+            package='thermal_processing',
+            executable='camera_control',
+            name='camera_tracking',
+            output='screen'
+        ),
 
 
     
