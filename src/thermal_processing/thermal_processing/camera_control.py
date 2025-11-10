@@ -9,7 +9,7 @@ class CameraTracker(Node):
 
         self.subscription = self.create_subscription(
             String,
-            '/optris/hotspot_location',
+            '/thermal_image_max_location',
             self.callback,
             10
         )

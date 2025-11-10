@@ -19,7 +19,6 @@ class ThermalROIDetector(Node):
 
         self.image_publisher = self.create_publisher(Image, '/thermal_image_annotated' , 10)
         self.location_publisher = self.create_publisher(String, '/thermal_image_max_location' , 10)
-        self.motor_publisher = self.create_publisher(String, 'thermal_image_motor_control_string', 10)
         
     def image_callback(self, msg):
         # Convert ROS image to OpenCV
@@ -74,6 +73,7 @@ class ThermalROIDetector(Node):
         annotated_msg = self.bridge.cv2_to_imgmsg(img_8bit, encoding='mono8')
         self.image_publisher.publish(annotated_msg)
         self.location_publisher.publish(String(data=str(centroid)))
+        
 
 def main(args=None):
     rclpy.init(args=args)

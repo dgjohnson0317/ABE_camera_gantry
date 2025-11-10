@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'image_processor = thermal_processing.image_processor:main',
             'camera_control = thermal_processing.camera_control:main',
+            'arduino_link = thermal_processing.arduino_link:main',
         ],
     },
 )

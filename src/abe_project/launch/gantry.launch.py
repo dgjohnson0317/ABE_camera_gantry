@@ -19,6 +19,16 @@ def generate_launch_description():
         'rviz',
         'rviz_config.rviz'
     )
+
+
+    # Declare a launch argument named 'device_port'
+    device_port_arg = DeclareLaunchArgument(
+        'device_port',
+        default_value='/dev/ttyACM0',
+        description='Serial port connected to the Arduino'
+    )
+
+    
     # Optional: allow a gantry prefix
 
 
@@ -41,6 +51,14 @@ def generate_launch_description():
         ' gantry:=',
         LaunchConfiguration('gantry')
     ])}
+
+    # Define the node and pass in the parameter from the launch argument
+    arduino_node = Node(
+        package='thermal_processing',
+        executable='arduino_link',
+        name='arduino_link',
+        parameters=[{'device_port': LaunchConfiguration('device_port')}]
+    )
 
     return LaunchDescription([
 
@@ -101,6 +119,9 @@ def generate_launch_description():
             name='camera_tracking',
             output='screen'
         ),
+
+        device_port_arg,
+        arduino_node
 
 
     
