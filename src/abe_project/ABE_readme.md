@@ -83,6 +83,9 @@ The next steps here are somewhat convoluted, where autoscaling needs to be set t
   <TemperatureOutput>1</TemperatureOutput>
   ```
 
+### Arduino
+After first trying to run the arduino link package, there are permission errors, where ros2 and the user cannot access the arduino to read/write to. this can be resolved using `sudo chmod a+rw /dev/ttyACM0`. The only other consideration now is that how exactly to parse the data through serial. 
+
 #### Objectives
 At the moment, I intend to clone the cmml optris camera directory to be able to get it working in the current build I have going on. However, I am unsure whether I can just copy /src.
 

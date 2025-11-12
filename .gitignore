@@ -1,0 +1,6 @@
+build/
+install/
+log/
+recording_for_testing/
+
+/src/optris_drivers2/

@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String  # Standard ROS 2 message type for text
+from std_msgs.msg import String, Float32  # Standard ROS 2 message type for text
 import serial  # Python serial communication library
 
 class ArduinoBridge(Node):
@@ -29,29 +29,33 @@ class ArduinoBridge(Node):
         # - Callback function: listener_callback
         # - Queue size: 10
         self.create_subscription(
-            String,
+            Float32,
             '/motor/pan_cmd',
-            self.listener_callback,
+            self.pan_callback,
             10
         )
         self.create_subscription(
-            String,
+            Float32,
             '/motor/tilk_cmd',
-            self.listener_callback,
+            self.tilt_callback,
             10
         )
+        self.create_timer(.05, self.send_serial_update)
 
         self.get_logger().info('Arduino bridge node started. Listening for motor commands')
 
-    def listener_callback(self, msg):
-        # This function is called every time a message is received on the topic
+    def pan_callback(self, msg):
+        self.latest_pan = msg.data
+    
+    def pan_callback(self, msg):
+        self.latest_pan = msg.data
+    
+    def send_serial_update(self):
+        # Format message
+        message = f"PAN:{self.latest_pan:.2f},TILT:{self.latest_tilt:.2f}\n"
+        self.ser.write(message.encode())
+        self.get_logger().debug(f"Sent: {message.strip()}")
 
-        # Print the received message to the ROS 2 log
-        self.get_logger().info(f'Received: "{msg.data}"')
-
-        # Send the message data (as bytes) to the Arduino over serial
-        # For example, if msg.data = "1", it sends the character '1'
-        self.ser.write(msg.data.encode())
 
 def main(args=None):
     # Initialize the ROS 2 system

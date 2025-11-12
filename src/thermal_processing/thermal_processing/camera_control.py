@@ -23,8 +23,12 @@ class CameraTracker(Node):
         self.frame_height = 480
 
         # Control gains (tune these)
-        self.kp_pan = 0.005
-        self.kp_tilt = 0.005
+        self.kp_pan = 0.3
+        self.kp_tilt = 0.3
+        self.smoothing_factor = .2
+
+        self.current_pan = 90
+        self.current_tilt = 90
 
         self.get_logger().info("Camera Tracker Node started")
 
@@ -42,17 +46,30 @@ class CameraTracker(Node):
         cy_target = self.frame_height / 2
         error_x = cx_target - cx
         error_y = cy_target - cy
+        # Scale errors into servo degrees (small proportional response)
+        delta_pan = self.kp_pan * (error_x / (self.frame_width / 2)) * 90  # maps ±320 px → ±90°
+        delta_tilt = self.kp_tilt * (error_y / (self.frame_height / 2)) * 90  # maps ±240 px → ±90°
 
-        # Simple proportional control
-        pan_speed = self.kp_pan * error_x
-        tilt_speed = self.kp_tilt * error_y
+        # Compute desired target positions
+        target_pan = 90 + delta_pan
+        target_tilt = 90 + delta_tilt
 
-        # Publish control signals
-        self.pan_pub.publish(Float32(data=pan_speed))
-        self.tilt_pub.publish(Float32(data=tilt_speed))
+        # Clamp angles
+        target_pan = max(0, min(180, target_pan))
+        target_tilt = max(0, min(180, target_tilt))
 
-        self.get_logger().info(f"Pan: {pan_speed:.3f}, Tilt: {tilt_speed:.3f}")
+        # Exponential smoothing
+        self.current_pan = (1 - self.smoothing_factor) * self.current_pan + self.smoothing_factor * target_pan
+        self.current_tilt = (1 - self.smoothing_factor) * self.current_tilt + self.smoothing_factor * target_tilt
 
+        # Publish smoothed angles
+        self.pan_pub.publish(Float32(data=self.current_pan))
+        self.tilt_pub.publish(Float32(data=self.current_tilt))
+
+        self.get_logger().info(
+            f"Target Pan={target_pan:.1f}, Tilt={target_tilt:.1f} | "
+            f"Smoothed Pan={self.current_pan:.1f}, Tilt={self.current_tilt:.1f}"
+        )
 
 def main(args=None):
     rclpy.init(args=args)
