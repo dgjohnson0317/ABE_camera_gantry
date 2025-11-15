@@ -4,7 +4,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Path to your bag
-    bag_path = 'recording_for_testing'
+    bag_path = 'rosbag2_2025_11_15-13_23_07'
 
     # Replay the bag file
     rosbag_play = ExecuteProcess(
@@ -29,9 +29,18 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}]
     )
 
+    rviz = Node(
+    package='rviz2',
+    executable='rviz2',
+    name='rviz2',
+    arguments=['-d', 'src/abe_project/rviz/rviz_config.rviz'],
+    parameters=[{'use_sim_time': True}],
+)
+
     # Combine everything
     return LaunchDescription([
         rosbag_play,
         image_processor,
-        arduino_link
+        arduino_link,
+        rviz
     ])

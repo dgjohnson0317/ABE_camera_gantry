@@ -63,11 +63,11 @@ class ThermalROIDetector(Node):
         avg_temp = np.mean(roi)
 
         # Step 5: Annotate visualization image
-        color = 255  # white in mono8
+        color = 128  # white in mono8
         cv2.rectangle(img_8bit, (x1, y1), (x2, y2), color, 2)
         cv2.circle(img_8bit, centroid, 6, color, 2)
-        cv2.putText(img_8bit, f"Avg: {avg_temp*0.07:.1f}", (centroid[0]+10, centroid[1]),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 1)
+        #cv2.putText(img_8bit, f"Avg: {avg_temp*.01:.1f}", (centroid[0]+10, centroid[1]),
+        #           cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 1)
 
         # Step 6: Publish annotated image and location
         annotated_msg = self.bridge.cv2_to_imgmsg(img_8bit, encoding='mono8')

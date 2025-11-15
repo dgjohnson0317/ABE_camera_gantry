@@ -18,13 +18,13 @@
   
   <fov>18</fov>
   <temperature>
-    <min>-20</min>TemperatureOutput
+    <min>-20</min>
     <max>100</max>
   </temperature>
   <optics_text></optics_text>
 
   <AutoScale>0</AutoScale>
-  <TemperatureOutput>1</TemperatureOutput>
+  <TemperatureOutput>0</TemperatureOutput>
 
   <framerate>20.0</framerate>             <!-- only scaled down frame rate, maximum framerate depends on the chosen <videoformatindex> -->
   <bispectral>0</bispectral>              <!-- 0=only thermal sensor, 1=bispectral technology (only PI200/PI230) -->

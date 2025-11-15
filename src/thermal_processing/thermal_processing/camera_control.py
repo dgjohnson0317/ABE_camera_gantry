@@ -19,8 +19,8 @@ class CameraTracker(Node):
         self.tilt_pub = self.create_publisher(Float32, '/motor/tilt_cmd', 10)
 
         # Frame dimensions (you can parametrize this)
-        self.frame_width = 640
-        self.frame_height = 480
+        self.frame_width = 382 #for pi400
+        self.frame_height = 288
 
         # Control gains (tune these)
         self.kp_pan = 0.3
@@ -29,6 +29,9 @@ class CameraTracker(Node):
 
         self.current_pan = 90
         self.current_tilt = 90
+
+        self.target_pan = 0
+        self.target_tilt = 0
 
         self.get_logger().info("Camera Tracker Node started")
 
@@ -47,27 +50,30 @@ class CameraTracker(Node):
         error_x = cx_target - cx
         error_y = cy_target - cy
         # Scale errors into servo degrees (small proportional response)
-        delta_pan = self.kp_pan * (error_x / (self.frame_width / 2)) * 90  # maps ±320 px → ±90°
-        delta_tilt = self.kp_tilt * (error_y / (self.frame_height / 2)) * 90  # maps ±240 px → ±90°
-
+        delta_pan = self.kp_pan * (error_x / (self.frame_width / 2))  # maps ±320 px → ±90° (change from *90 to *180 for more pronounced movement) (removed *anything, trying to implement feedback to +/- on self)
+        delta_tilt = self.kp_tilt * (error_y / (self.frame_height / 2))  # maps ±240 px → ±90°
+        
         # Compute desired target positions
-        target_pan = 90 + delta_pan
-        target_tilt = 90 + delta_tilt
+        self.target_pan += delta_pan #(removed 90 + ... and made +=)
+        self.target_tilt += delta_tilt
 
         # Clamp angles
-        target_pan = max(0, min(180, target_pan))
-        target_tilt = max(0, min(180, target_tilt))
+        self.target_pan = max(0, min(180, self.target_pan))
+        self.target_tilt = max(0, min(180, self.target_tilt))
 
         # Exponential smoothing
-        self.current_pan = (1 - self.smoothing_factor) * self.current_pan + self.smoothing_factor * target_pan
-        self.current_tilt = (1 - self.smoothing_factor) * self.current_tilt + self.smoothing_factor * target_tilt
+        #self.current_pan = (1 - self.smoothing_factor) * self.current_pan + self.smoothing_factor * target_pan
+        #self.current_tilt = (1 - self.smoothing_factor) * self.current_tilt + self.smoothing_factor * target_tilt
 
         # Publish smoothed angles
-        self.pan_pub.publish(Float32(data=self.current_pan))
-        self.tilt_pub.publish(Float32(data=self.current_tilt))
+        #self.pan_pub.publish(Float32(data=self.current_pan))
+        #self.tilt_pub.publish(Float32(data=self.current_tilt))
+
+        self.pan_pub.publish(Float32(data=self.target_pan))
+        self.tilt_pub.publish(Float32(data=self.target_tilt))
 
         self.get_logger().info(
-            f"Target Pan={target_pan:.1f}, Tilt={target_tilt:.1f} | "
+            f"Target Pan={self.target_pan:.1f}, Tilt={self.target_tilt:.1f} | "
             f"Smoothed Pan={self.current_pan:.1f}, Tilt={self.current_tilt:.1f}"
         )
 

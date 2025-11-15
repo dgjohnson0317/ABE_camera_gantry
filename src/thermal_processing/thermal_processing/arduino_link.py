@@ -36,10 +36,12 @@ class ArduinoBridge(Node):
         )
         self.create_subscription(
             Float32,
-            '/motor/tilk_cmd',
+            '/motor/tilt_cmd',
             self.tilt_callback,
             10
         )
+        self.latest_tilt = 90
+        self.latest_pan = 90
         self.create_timer(.05, self.send_serial_update)
 
         self.get_logger().info('Arduino bridge node started. Listening for motor commands')
@@ -47,8 +49,8 @@ class ArduinoBridge(Node):
     def pan_callback(self, msg):
         self.latest_pan = msg.data
     
-    def pan_callback(self, msg):
-        self.latest_pan = msg.data
+    def tilt_callback(self, msg):
+        self.latest_tilt = msg.data
     
     def send_serial_update(self):
         # Format message
