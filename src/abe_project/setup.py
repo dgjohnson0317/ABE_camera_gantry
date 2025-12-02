@@ -11,6 +11,8 @@ setup(
             ('share/' + package_name, ['package.xml']),
             ('share/' + package_name + '/launch', ['launch/gantry.launch.py']),
             ('share/' + package_name + '/launch', ['launch/rosbag.launch.py']),
+            ('share/' + package_name + '/launch', ['launch/camera.launch.py']),
+            ('share/' + package_name + '/launch', ['launch/rosbag.launch.py']),
             ('share/' + package_name + '/urdf', ['urdf/camera_gimbal.xacro']),
             ('share/' + package_name + '/urdf', ['urdf/gantry.xacro']),
             ('share/' + package_name + '/config' + '/optris', ['config/optris/optris_config.xml']),

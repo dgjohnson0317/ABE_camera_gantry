@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <imager xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <serial>22102149</serial>   <!-- Provide serial number, if you attach more than one camera -->
+  <serial>24032026</serial>   <!-- Provide serial number, if you attach more than one camera -->
   <videoformatindex>0</videoformatindex> <!-- index of the used video format resolution and framerate (USB enpoint): http://documentation.evocortex.com/libirimager2/html/index.html#sec_videoformat -->
   <formatspath>/usr/share/libirimager</formatspath>
   <calipath>/usr/share/libirimager/cali</calipath>
@@ -15,14 +15,14 @@
        temperature: This value specify the selection of the calibration temperature range. 
                     Only predefined temperature ranges are valid which can be obtained through the data sheet of your camera or PIX Connect.
   -->
-  
-  <fov>90</fov>
+  <!--
+  <fov>16</fov>
   <temperature>
-    <min>-20</min>
-    <max>100</max>
+    <min>450</min>
+    <max>1800</max>
   </temperature>
   <optics_text></optics_text>
-  
+  -->
   <framerate>32.0</framerate>             <!-- only scaled down frame rate, maximum framerate depends on the chosen <videoformatindex> -->
   <bispectral>0</bispectral>              <!-- 0=only thermal sensor, 1=bispectral technology (only PI200/PI230) -->
   <autoflag>
@@ -54,6 +54,4 @@
   </ethernet_device>
   -->
 </imager>
-
-
 

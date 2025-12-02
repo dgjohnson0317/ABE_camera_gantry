@@ -22,6 +22,10 @@ class ThermalROIDetector(Node):
         
     def image_callback(self, msg):
         # Convert ROS image to OpenCV
+
+        self.frame_width = 382 #for pi400
+        self.frame_height = 288
+
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='mono16')
 
         # Normalize to 8-bit for visualization
@@ -65,7 +69,9 @@ class ThermalROIDetector(Node):
         # Step 5: Annotate visualization image
         color = 128  # white in mono8
         cv2.rectangle(img_8bit, (x1, y1), (x2, y2), color, 2)
+        cv2.circle(img_8bit, (int(self.frame_width/2), int(self.frame_height/2)), 4, color, 2)
         cv2.circle(img_8bit, centroid, 6, color, 2)
+        cv2.line(img_8bit, (int(self.frame_width/2), int(self.frame_height/2)), centroid, color, 1)
         #cv2.putText(img_8bit, f"Avg: {avg_temp*.01:.1f}", (centroid[0]+10, centroid[1]),
         #           cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 1)
 
