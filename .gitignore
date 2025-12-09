@@ -2,8 +2,6 @@ build/
 install/
 log/
 recording_for_testing/
-rosbag2_2025_11_15-11_11_03
-rosbag2_2025_11_15-13_23_07
-rosbag2_2025_11_17-16_22_30
+rosbag2*
 /camera_calibration/
 /src/optris_drivers2/
