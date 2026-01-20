@@ -12,69 +12,23 @@ import os
 def generate_launch_description():
 
     config_file = os.path.join(
-        get_package_share_directory('abe_project'), 'config', 'optris', 'optris_config.xml'
-    )
-    rviz_config_file = os.path.join(
-        get_package_share_directory('abe_project'),
-        'rviz',
-        'rviz_config.rviz'
+        get_package_share_directory('abe_project'), 'config', 'optris', 'xi400_2.xml'
     )
 
-    
-    # Optional: allow a gantry prefix
 
-
-    gantry_arg = DeclareLaunchArgument(
-        'gantry',
-        default_value='gantry',
-        description='Prefix for gantry links'
-    )
-
-    urdf_file = PathJoinSubstitution([
-        FindPackageShare('abe_project'),
-        'urdf',
-        'gantry.xacro'
-    ])
-
-    robot_description = {'robot_description': Command([
-        FindExecutable(name='xacro'),
-        ' ',
-        urdf_file,
-        ' gantry:=',
-        LaunchConfiguration('gantry')
-    ])}
 
 
     return LaunchDescription([
 
 
-        gantry_arg,
-
-        # Publish robot state
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            output='screen',
-            emulate_tty=True,
-            parameters=[robot_description]
-        ),
-
-        # Joint sliders for RViz
-        Node(
-            package='joint_state_publisher_gui',
-            executable='joint_state_publisher_gui',
-            output='screen',
-            emulate_tty=True
-        ),
 
         # Optional: RViz for immediate visualization
         Node(
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
+            package='rqt_gui',
+            executable='rqt_gui',
+            name='rqt_gui',
             output='screen',
-            emulate_tty=True,
-            arguments=['-d', rviz_config_file]  # optional, can remove if no config yet
+            emulate_tty=True  # optional, can remove if no config yet
         ), 
         Node(
             package='optris_drivers2',
@@ -89,21 +43,7 @@ def generate_launch_description():
             executable='optris_colorconvert_node',
             name='optris_camera_colored',
             output='screen',  # adjust path
-        ),
-
-        Node(
-            package='thermal_processing',
-            executable='image_processor',
-            name='thermal_roi_detector',
-            output='screen'
-        ),
-
-        Node(
-            package='thermal_processing',
-            executable='camera_control',
-            name='camera_tracking',
-            output='screen'
-        ),
+        )
 
     
 

@@ -4,13 +4,13 @@ This file intends to outline the steps required to use the ros2 camera_calibrati
 ## Installation and usage
 ### Downloading camera_calibration package
 To download the camera_calibration package, you can use the following command. This will download and install the camera calibration package to your local ros2 install, where it will then be sources each time you source ros2 (using `source /opt/ros/humble/setup.bash`)
-```
+```sh
 sudo apt install ros-humble-camera-calibration
 ```
 
 ### Running camera_calibrator node 
 As per other documentation, the camera calibration node can be launched using the following script. Also, the table below outlines the input parameters that can be input to this script. 
-```
+```sh
 ros2 run camera_calibration cameracalibrator --size <NxM> --square <WIDTH> --pattern <PATTERN> --ros-args -r image:=/<IMAGE_TOPIC_NAME> 
 ```
 
@@ -69,12 +69,12 @@ Using optris service calls, we can change the color palette (pallete 4) to allow
 
 ## Calibrations 
 Using the following command, you can launch cameracalibrator, alter the calibration board x and y positions, as well as skew and rotation until the calibrate button appears in the calibrator window, allowing you to generate and commit the output .yaml file to a location. 
-```
+```sh
 ros2 run camera_calibration cameracalibrator --size 3x7 --square 0.0298 --pattern acircles --ros-args -r image:=/thermal_image_view 
 ```
 Shown below are the the terminal outputs after calibrating the Optris PI400
 
-```
+```sh
 **** Calibrating ****
 mono pinhole calibration...
 *** Added sample 80, p_x = 0.291, p_y = 0.564, p_size = 0.386, skew = 0.004
@@ -85,7 +85,7 @@ P = [1138.55908203125, 0.0, 158.48125087439257, 0.0, 0.0, 1139.740478515625, 222
 None
 ```
 #### `ost.txt`:
-```
+```sh
 # oST version 5.0 parameters
 
 
@@ -121,8 +121,9 @@ projection
 ```
 
 The ost data is written to a tar.gz zip file, as shown in the last line of the code block above. This zip file contains some calibration images, the ost block from above (in ost.txt), as well as the yaml file for the camera calibration (ost.yaml) shown below:
+
 #### `ost.yaml`:
-```
+```sh
 image_width: 382
 image_height: 288
 camera_name: narrow_stereo

@@ -4,7 +4,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Path to your bag
-    bag_path = 'rosbag2_2025_11_15-13_23_07'
+    bag_path = 'rosbag2_2025_11_17-16_22_30'
 
     # Replay the bag file
     rosbag_play = ExecuteProcess(

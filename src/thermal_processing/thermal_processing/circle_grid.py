@@ -14,9 +14,9 @@ class CircleGridCalibrator(Node):
 
         # Parameters
         self.declare_parameter('image_topic', '/circles_image')
-        self.declare_parameter('pattern_rows', 3)    # number of circle rows
-        self.declare_parameter('pattern_cols', 3)   # number of circle columns
-        self.declare_parameter('square_size', 0.024) # meters
+        self.declare_parameter('pattern_rows', 9)    # number of circle rows
+        self.declare_parameter('pattern_cols', 6)   # number of circle columns
+        self.declare_parameter('square_size', 0.05) # meters
         self.declare_parameter('output_file', 'circle_camera_calibration.yaml')
 
         self.image_topic = self.get_parameter('image_topic').get_parameter_value().string_value
