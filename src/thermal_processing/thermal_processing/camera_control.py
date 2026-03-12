@@ -15,8 +15,8 @@ class CameraTracker(Node):
         )
 
         # Publishers to your motor controller
-        self.pan_pub = self.create_publisher(Float32, '/motor/pan_cmd', 10)
-        self.tilt_pub = self.create_publisher(Float32, '/motor/tilt_cmd', 10)
+        self.pan_pub = self.create_publisher(Float32, '/motor/pan_cmd', 3)
+        self.tilt_pub = self.create_publisher(Float32, '/motor/tilt_cmd', 3)
 
         # Frame dimensions (you can parametrize this)
         self.frame_width = 382 #for pi400

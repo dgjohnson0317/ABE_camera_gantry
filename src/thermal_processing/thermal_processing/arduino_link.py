@@ -1,4 +1,5 @@
 import rclpy
+import time
 from rclpy.node import Node
 from std_msgs.msg import String, Float32  # Standard ROS 2 message type for text
 import serial  # Python serial communication library
@@ -17,11 +18,19 @@ class ArduinoBridge(Node):
         # Read the parameter value
         port = self.get_parameter('device_port').get_parameter_value().string_value
 
-        # Now open that port
-        self.ser = serial.Serial(port, 115200)
+        self.ser = serial.Serial(port, 115200, timeout=1)
+        
+        # CRITICAL: Wait 2 seconds for the Mega to reboot after opening Serial
+        self.get_logger().info('Waiting for Arduino to reboot...')
+        time.sleep(2) 
+
+        # Optional: Send a "Wake Up" character if needed
+        self.ser.write(b'\n')
 
         self.get_logger().info(f'Connected to Arduino on {port}')
 
+        time.sleep(2)  # Wait a moment to ensure connection is stable
+        
 
         # Create a ROS 2 subscriber
         # - Topic name: 'led_toggle'
@@ -55,8 +64,10 @@ class ArduinoBridge(Node):
     def send_serial_update(self):
         # Format message
         message = f"PAN:{self.latest_pan:.2f},TILT:{self.latest_tilt:.2f}\n"
-        self.ser.write(message.encode())
+        self.ser.write(message.encode('utf-8'))
         self.get_logger().debug(f"Sent: {message.strip()}")
+        print(f"Sent: {message.strip()}")  # Also print to console for visibility
+
 
 
 def main(args=None):

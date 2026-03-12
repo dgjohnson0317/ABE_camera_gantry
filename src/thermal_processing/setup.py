@@ -27,6 +27,7 @@ setup(
             'image_processor = thermal_processing.image_processor:main',
             'camera_control = thermal_processing.camera_control:main',
             'arduino_link = thermal_processing.arduino_link:main',
+            'arduino_link2 = thermal_processing.arduino_link2:main',
             'circle_detection = thermal_processing.circle_detection:main',
             'circle_grid = thermal_processing.circle_grid:main',
 
