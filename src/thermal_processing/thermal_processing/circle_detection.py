@@ -14,7 +14,7 @@ class CircleDetector(Node):
 
         self.subscription = self.create_subscription(
             Image,
-            '/thermal_image',  # <-- change to your topic
+            '/thermal_image', 
             self.image_callback,
             10
         )

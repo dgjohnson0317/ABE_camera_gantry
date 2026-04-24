@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'image_processor = thermal_processing.image_processor:main',
             'camera_control = thermal_processing.camera_control:main',
+            'camera_control2 = thermal_processing.camera_control2:main',
             'arduino_link = thermal_processing.arduino_link:main',
             'arduino_link2 = thermal_processing.arduino_link2:main',
             'circle_detection = thermal_processing.circle_detection:main',

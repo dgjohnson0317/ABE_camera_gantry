@@ -23,15 +23,11 @@ class CameraTracker(Node):
         self.frame_height = 288
 
         # Control gains (tune these)
-        self.kp_pan = 0.3
-        self.kp_tilt = 0.3
-        self.smoothing_factor = .2
-
-        self.current_pan = 90
-        self.current_tilt = 90
-
-        self.target_pan = 0
-        self.target_tilt = 0
+        self.kp_pan = 200.0 # steps/ sec per pixel of error (try 200-500)
+        self.kp_tilt = 200.0
+        
+        self.deadband = 0.2
+        #self.smoothing_factor = .2
 
         self.get_logger().info("Camera Tracker Node started")
 
@@ -44,37 +40,37 @@ class CameraTracker(Node):
             self.get_logger().error(f"Invalid centroid data: {msg.data}")
             return
 
-        # Compute pixel error
+        print(f"Received centroid: ({cx}, {cy})")
+        # Center of frame
         cx_target = self.frame_width / 2
         cy_target = self.frame_height / 2
-        error_x = cx_target - cx
-        error_y = cy_target - cy
-        # Scale errors into servo degrees (small proportional response)
-        delta_pan = self.kp_pan * (error_x / (self.frame_width / 2))  # maps ±320 px → ±90° (change from *90 to *180 for more pronounced movement) (removed *anything, trying to implement feedback to +/- on self)
-        delta_tilt = self.kp_tilt * (error_y / (self.frame_height / 2))  # maps ±240 px → ±90°
-        
-        # Compute desired target positions
-        self.target_pan += delta_pan #(removed 90 + ... and made +=)
-        self.target_tilt += delta_tilt
+
+        # Normalized error (-1, 1)
+        error_x = (cx_target - cx) / (self.frame_width / 2)
+        error_y = (cy_target - cy) / (self.frame_height / 2)
+
+        # Deadband to prevent jitter
+        if abs(error_x) < self.deadband:
+            error_x = 0.0
+        if abs(error_y) < self.deadband:
+            error_y = 0.0
+
+        # Convert to velocity
+        vel_pan = self.kp_pan * error_x
+        vel_tilt = self.kp_tilt * error_y
 
         # Clamp angles
-        self.target_pan = max(0, min(180, self.target_pan))
-        self.target_tilt = max(0, min(180, self.target_tilt))
+        max_speed = 800.0
+        vel_pan = max(-max_speed, min(max_speed, vel_pan))
+        vel_tilt = max(-max_speed, min(max_speed, vel_tilt))
 
-        # Exponential smoothing
-        #self.current_pan = (1 - self.smoothing_factor) * self.current_pan + self.smoothing_factor * target_pan
-        #self.current_tilt = (1 - self.smoothing_factor) * self.current_tilt + self.smoothing_factor * target_tilt
-
-        # Publish smoothed angles
-        #self.pan_pub.publish(Float32(data=self.current_pan))
-        #self.tilt_pub.publish(Float32(data=self.current_tilt))
-
-        self.pan_pub.publish(Float32(data=self.target_pan))
-        self.tilt_pub.publish(Float32(data=self.target_tilt))
-
+        # Publish velocities
+        self.pan_pub.publish(Float32(data=vel_pan))
+        self.tilt_pub.publish(Float32(data=vel_tilt))
+        
         self.get_logger().info(
-            f"Target Pan={self.target_pan:.1f}, Tilt={self.target_tilt:.1f} | "
-            f"Smoothed Pan={self.current_pan:.1f}, Tilt={self.current_tilt:.1f}"
+            f"errx={error_x:.2f}, erry={error_y:.2f} | "
+            f"vel_pan={vel_pan:.1f}, vel_tilt={vel_tilt:.1f}"
         )
 
 def main(args=None):
