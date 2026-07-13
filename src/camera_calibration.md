@@ -66,6 +66,9 @@ For the calibration board, the camera calibration node seems to require the dots
 
 Using optris service calls, we can change the color palette (pallete 4) to allow for the hot regions to be black, and cold to be white. At the current settings, ambient is about 40c and the cold temperature is 20c, with the pallete scaling being set to manual (1).These settings can be changed in rqt using the service caller, found in `rqt/plugins/services/service caller`.
 
+### Current issues/bottlenecks
+After various testing, it has been found that the camera resolution has a direct impact on 'acircles' detection using this package. After various testing, the required distance at factory resolution is longer for the Basler acA5472 than it is for the acA1920. This effect was not seen with the checkerboard pattern. Binning of the image can be used to aleviate this issue, although further testing should be done to understand the full scope of this issue. 
+
 
 ## Calibrations 
 Using the following command, you can launch cameracalibrator, alter the calibration board x and y positions, as well as skew and rotation until the calibrate button appears in the calibrator window, allowing you to generate and commit the output .yaml file to a location. 

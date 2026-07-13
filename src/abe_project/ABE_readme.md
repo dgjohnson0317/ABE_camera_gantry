@@ -1,4 +1,4 @@
-# Steps to build package in workspace
+ # Steps to build package in workspace
 This document indends to highlight all of the steps taken in order to build a local version of ros, and get a package for visualizing the ABE_project working in a local ros2 workspace, instead of apptainer.
 ## Installing ros2 and colcon
 The installation process for ros2 humble was done using the ros2 installation guide found here: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html
