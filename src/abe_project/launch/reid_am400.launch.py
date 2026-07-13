@@ -69,22 +69,22 @@ def generate_launch_description():
     period=5.0,
     actions=[
  
-    Node(package = 'optris_drivers2',
-                    executable = 'optris_imager_node',
-                    name = 'pi640',
-                    remappings=[
-                    ("/thermal_image", "/thermal_image_pi640")],
-                    arguments = [PathJoinSubstitution([FindPackageShare("am400_bringup"),"config","optris","19102025_LT.xml"])],
-                    #output='screen'
-                    ),
- 
-    Node(package = 'optris_drivers2',
-                    executable = 'optris_colorconvert_node',
-                    name = 'convert',
-                    remappings=[
-                    ("/thermal_image", "thermal_image_pi640"),
-                    ("/thermal_image_view", "/thermal_image_viewpi640")],
-                    ),
+    #Node(package = 'optris_drivers2',
+    #                executable = 'optris_imager_node',
+    #                name = 'pi640',
+    #                remappings=[
+    #                ("/thermal_image", "/thermal_image_pi640")],
+    #                arguments = [PathJoinSubstitution([FindPackageShare("am400_bringup"),"config","optris","19102025_LT.xml"])],
+    #                #output='screen'
+    #                ),
+ #
+    #Node(package = 'optris_drivers2',
+    #                executable = 'optris_colorconvert_node',
+    #                name = 'convert',
+    #                remappings=[
+    #                ("/thermal_image", "thermal_image_pi640"),
+    #                ("/thermal_image_view", "/thermal_image_viewpi640")],
+    #                ),
                     
     Node(package = 'ueye_cam',
             name="ueye",

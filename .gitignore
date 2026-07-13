@@ -5,3 +5,7 @@ recording_for_testing/
 rosbag2*
 /camera_calibration/
 /src/optris_drivers2/
+tf_data.csv
+trajectory_data.csv 
+processing_data.csv
+rosbags.zip

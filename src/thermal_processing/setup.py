@@ -31,6 +31,7 @@ setup(
             'arduino_link2 = thermal_processing.arduino_link2:main',
             'circle_detection = thermal_processing.circle_detection:main',
             'circle_grid = thermal_processing.circle_grid:main',
+            'position_data = thermal_processing.position_data_processing_rosbag:main',
 
         ],
     },
